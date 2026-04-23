@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+.env
+
+# Models (too large for GitHub)
+models/
+
+# Data (downloaded at runtime)
+data/chroma_db/
+data/reference_embeddings.npz
+
+# Results (generated at runtime)
+results/
+
+# API Keys
+.env
+*.env
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
