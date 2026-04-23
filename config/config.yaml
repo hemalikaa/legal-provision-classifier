@@ -1,0 +1,81 @@
+# =============================================================================
+# Legal Provision Classification & Contract Risk Analyzer
+# Configuration File — all hyperparameters and paths in one place
+# =============================================================================
+
+project:
+  name: "Legal Provision Classification & Contract Risk Analyzer"
+  version: "1.0.0"
+  seed: 42
+
+# -----------------------------------------------------------------------------
+# Dataset
+# -----------------------------------------------------------------------------
+data:
+  dataset_name: "coastalcph/lex_glue"
+  dataset_config: "ledgar"
+  num_labels: 100
+  max_length: 512
+  train_split: "train"
+  validation_split: "validation"
+  test_split: "test"
+  reference_embeddings_path: "data/reference_embeddings.npz"
+  max_per_category: 100
+
+# -----------------------------------------------------------------------------
+# BERT Fine-tuning
+# -----------------------------------------------------------------------------
+bert:
+  model_name: "bert-base-uncased"
+  output_dir: "bert_results"
+  num_train_epochs: 5
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 32
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  eval_strategy: "epoch"
+  save_strategy: "epoch"
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_f1_micro"
+  fp16: true
+  logging_steps: 50
+
+# -----------------------------------------------------------------------------
+# Groq API (Zero-shot & RAG)
+# -----------------------------------------------------------------------------
+groq:
+  model: "llama-3.3-70b-versatile"
+  temperature: 0.0
+  max_tokens: 512
+  request_delay_seconds: 1.5       # rate-limit buffer between calls
+  max_retries: 3
+  retry_delay_seconds: 5
+
+# -----------------------------------------------------------------------------
+# RAG Pipeline
+# -----------------------------------------------------------------------------
+rag:
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  chroma_persist_dir: "data/chroma_db"
+  collection_name: "ledgar_provisions"
+  top_k: 5                         # number of few-shot examples to retrieve
+  eval_sample_size: 200            # number of test samples to evaluate
+
+# -----------------------------------------------------------------------------
+# Risk Detector
+# -----------------------------------------------------------------------------
+risk:
+  similarity_threshold_high: 0.85  # cosine sim >= this → LOW risk (matches standard)
+  similarity_threshold_medium: 0.65 # cosine sim >= this → MEDIUM risk
+                                    # below → HIGH risk (deviates significantly)
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+
+# -----------------------------------------------------------------------------
+# Evaluation
+# -----------------------------------------------------------------------------
+evaluation:
+  zeroshot_sample_size: 200
+  rag_sample_size: 200
+  results_dir: "results"
+  plots_dir: "results/plots"
