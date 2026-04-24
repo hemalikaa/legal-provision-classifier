@@ -192,7 +192,6 @@ def load_models():
     cfg = load_config("config/config.yaml")
     _, label_names = load_ledgar(cfg)
 
-    # TF-IDF
     try:
         vectorizer, clf = load_tfidf_model()
         tfidf_loaded = True
@@ -200,7 +199,6 @@ def load_models():
         vectorizer, clf = None, None
         tfidf_loaded = False
 
-    # Risk detector
     try:
         ref_embeddings = load_reference_embeddings(
             cfg["data"]["reference_embeddings_path"], label_names
@@ -215,17 +213,40 @@ def load_models():
 
 
 @st.cache_resource(show_spinner="Loading RAG index...")
-def load_rag(_cfg, _label_names):
+def load_rag(_cfg, _label_names, _groq_key):
     from rag_pipeline import RAGClassifier
-    groq_key = os.environ.get("GROQ_API_KEY", "")
-    if not groq_key:
+    if not _groq_key:
         return None
     try:
-        rag = RAGClassifier(_cfg, _label_names, api_key=groq_key)
+        rag = RAGClassifier(_cfg, _label_names, api_key=_groq_key)
         rag.load_index()
         return rag
     except Exception:
         return None
+
+
+# ─── Get Groq Key ─────────────────────────────────────────────────────────────
+def get_groq_key():
+    """
+    Get Groq API key — first from environment (demo/deployment),
+    then from Streamlit secrets (Streamlit Cloud),
+    then let user enter it in the sidebar.
+    """
+    # Check environment variable first (set before running: $env:GROQ_API_KEY = "...")
+    env_key = os.environ.get("GROQ_API_KEY", "")
+    if env_key:
+        return env_key, True  # key, is_hidden
+
+    # Check Streamlit secrets (for Streamlit Cloud deployment)
+    try:
+        secret_key = st.secrets.get("GROQ_API_KEY", "")
+        if secret_key:
+            return secret_key, True
+    except Exception:
+        pass
+
+    # Fall back to user input in sidebar
+    return None, False
 
 
 # ─── Classification Functions ─────────────────────────────────────────────────
@@ -301,15 +322,30 @@ def main():
 
     cfg, label_names, vectorizer, clf, detector, tfidf_loaded, risk_loaded = load_models()
 
+    # Get API key
+    groq_key, key_is_hidden = get_groq_key()
+
     # Sidebar
     with st.sidebar:
         st.markdown("### ⚙️ Configuration")
-        groq_key = st.text_input(
-            "Groq API Key",
-            value=os.environ.get("GROQ_API_KEY", ""),
-            type="password",
-            help="Required for LLM-based approaches"
-        )
+
+        if key_is_hidden:
+            # Key loaded from environment or secrets — show green badge only
+            st.success("✅ API Connected", icon="🔑")
+        else:
+            # No environment key — let user enter their own
+            user_key = st.text_input(
+                "🔑 Groq API Key",
+                value="",
+                type="password",
+                placeholder="gsk_...",
+                help="Get a free key at console.groq.com"
+            )
+            if user_key:
+                groq_key = user_key
+                st.success("✅ API key set")
+            else:
+                st.info("Enter your Groq API key to use LLM approaches. Get one free at [console.groq.com](https://console.groq.com)")
 
         st.markdown("---")
         st.markdown("### 🔬 Approaches")
@@ -334,7 +370,7 @@ def main():
     rag_clf = None
     if use_rag and groq_key:
         with st.spinner("Loading RAG index..."):
-            rag_clf = load_rag(cfg, tuple(label_names))
+            rag_clf = load_rag(cfg, tuple(label_names), groq_key)
 
     # Input
     st.markdown('<div class="section-header">Contract Provision Input</div>', unsafe_allow_html=True)
