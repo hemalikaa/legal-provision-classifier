@@ -1,0 +1,5 @@
+{
+  "model": "bert-base-uncased",
+  "test_micro_f1": 0.8715,
+  "test_macro_f1": 0.7861768272886026
+}

@@ -1,0 +1,8 @@
+﻿{
+  "micro_f1": 0.6500,
+  "macro_f1": 0.4183,
+  "model": "llama-3.3-70b-versatile",
+  "approach": "chain-of-thought",
+  "sample_size": 100,
+  "notes": "Clean run with fresh key, no token exhaustion"
+}

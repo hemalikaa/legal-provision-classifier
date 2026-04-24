@@ -1,0 +1,9 @@
+﻿{
+  "micro_f1": 0.6800,
+  "macro_f1": 0.5943,
+  "model": "llama-3.3-70b-versatile",
+  "approach": "rag-few-shot",
+  "sample_size": 100,
+  "top_k": 5,
+  "index_size": 5000
+}

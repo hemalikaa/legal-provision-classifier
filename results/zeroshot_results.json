@@ -1,0 +1,8 @@
+﻿{
+  "micro_f1": 0.5150,
+  "macro_f1": 0.4018,
+  "model": "llama-3.3-70b-versatile",
+  "approach": "zero-shot",
+  "sample_size": 200,
+  "notes": "Some samples defaulted to General due to daily token limit exhaustion"
+}

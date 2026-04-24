@@ -1,0 +1,7 @@
+﻿{
+  "micro_f1": 0.8726,
+  "macro_f1": 0.8112,
+  "approach": "tfidf-logistic-regression",
+  "sample_size": 10000,
+  "notes": "Full test set evaluation on LEDGAR test split"
+}
