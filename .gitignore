@@ -10,17 +10,9 @@ build/
 # Virtual environments
 venv/
 env/
-.env
 
-# Models (too large for GitHub)
-models/
-
-# Data (downloaded at runtime)
-data/chroma_db/
-data/reference_embeddings.npz
-
-# Results (generated at runtime)
-results/
+# BERT model weights (too large for GitHub)
+models/bert_finetuned/
 
 # API Keys
 .env
