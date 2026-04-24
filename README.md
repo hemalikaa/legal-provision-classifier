@@ -1,6 +1,6 @@
 # Legal Provision Classification & Contract Risk Analyzer
 
-A system that classifies legal contract provisions into 100 categories and assesses deviation risk using five approaches — from classical ML to fine-tuned BERT and RAG-based LLMs.
+A system that classifies legal contract provisions into 100 categories and assesses deviation risk using five approaches from classical ML to fine-tuned BERT and RAG-based LLMs.
 
 **Course:** IE 7374 — Generative AI | Northeastern University | Spring 2026
 
