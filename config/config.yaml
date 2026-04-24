@@ -60,7 +60,7 @@ rag:
   chroma_persist_dir: "data/chroma_db"
   collection_name: "ledgar_provisions"
   top_k: 5                         # number of few-shot examples to retrieve
-  eval_sample_size: 200            # number of test samples to evaluate
+  eval_sample_size: 100            # number of test samples to evaluate
 
 # -----------------------------------------------------------------------------
 # Risk Detector
@@ -75,7 +75,7 @@ risk:
 # Evaluation
 # -----------------------------------------------------------------------------
 evaluation:
-  zeroshot_sample_size: 200
-  rag_sample_size: 200
+  zeroshot_sample_size: 100
+  rag_sample_size: 100
   results_dir: "results"
   plots_dir: "results/plots"
