@@ -16,9 +16,9 @@ We compare five approaches on the LEDGAR dataset (60,000 SEC contract provisions
 |---|---|---|
 | LEGAL-BERT (published baseline) | ~0.87 | ~0.77 |
 | TF-IDF + Logistic Regression | 0.8726 | 0.8112 |
-| Zero-shot Llama-3.3-70B | 0.5150 | 0.4018 |
-| Chain-of-Thought Llama-3.3-70B | 0.3850 | 0.3199 |
-| RAG Few-shot Llama-3.3-70B | TBD | TBD |
+| Zero-shot  | 0.5150 | 0.4018 |
+| Chain-of-Thought  | 0.3850 | 0.3199 |
+| RAG Few-shot  | TBD | TBD |
 | BERT-base Fine-tuned | 0.8715 | 0.7862 |
 
 ---
